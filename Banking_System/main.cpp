@@ -112,9 +112,8 @@ class Bank {
 Bank::Bank() {
   Account account;
   ifstream ifs;
-  ifs.open("Bank.data");
+  ifs.open("BankData.txt");
   if(!ifs) {
-    cout << "Error in opening the file!!! " <<endl;
     return;
   }
   while(!ifs.eof()) {
@@ -132,7 +131,7 @@ Account Bank::OpenAccount(string First_name, string Last_name, float Balance) {
   Account account(First_name,Last_name,Balance);
     accounts.insert(pair<long, Account>(account.getAccountNumber(),account));
 
-  outfile.open("Bank.data", ios::trunc);
+  outfile.open("BankData.txt", ios::trunc);
 
   map<long,Account>::iterator itr;
 
@@ -178,7 +177,7 @@ void Bank::ShowAllAccount() {
 
 Bank::~Bank() {
     ofstream outfile;
-    outfile.open("Bank.data", ios::trunc);
+    outfile.open("BankData.txt", ios::trunc);
     map<long,Account>::iterator itr;
     for(itr=accounts.begin();itr!=accounts.end();itr++)
     {
@@ -188,5 +187,104 @@ Bank::~Bank() {
 }
 
 int main() {
-    
+    Account acc;
+    Bank b;
+
+    int choice;
+    string fname, lname;
+    long account_number;
+    float balance, amount;
+
+    cout << "* * * * BANKING SYSTEM * * * *" << endl;
+    do {
+      cout << "\nChoose one option given below\n" << endl;
+      cout << "1. Open Account" << endl;
+      cout << "2. Deposit" << endl;
+      cout << "3. Withdrawl" << endl;
+      cout << "4. Balance Enquiry" << endl;
+      cout << "5. Close Account" << endl;
+      cout << "6. Show all Accounts" << endl;
+      cout << "7. Exit" << endl;
+
+      cout << "\nEnter your Choice: ";
+      cin >> choice;
+      
+      switch (choice) {
+
+        case 1: 
+          cout << "\nEnter your First name : ";
+          cin >> fname;
+
+          cout << "\nEnter your Last name : ";
+          cin >> lname;
+
+          cout << "\nEnter initial Balance: ";
+          cin >> balance;
+
+          acc = b.OpenAccount(fname,lname,balance);
+
+          cout << "\nCongratulations!! Your Account is being created Successfully!!!" << endl;
+          cout << acc;
+          break;
+
+        case 2:
+          cout << "\nEnter your Accout Number : ";
+          cin >> account_number;
+
+          cout << "\nEnter the Amount you want to Deposit : ";
+          cin >> amount;
+
+          acc = b.Deposit(account_number, amount);
+
+          cout <<"\nAmount is been Successfully Deposited!!!" << endl;
+          cout <<acc;
+          break;
+
+        case 3:
+          cout << "\nEnter your Accout Number : ";
+          cin >> account_number;
+
+          cout << "\nEnter the Amount you want to Withdraw : ";
+          cin >> amount;
+
+          acc = b.Withdraw(account_number, amount);
+
+          cout << "\nAmount is Withdrawn!!!" << endl;
+          cout << acc;
+          break;
+
+        case 4: 
+          cout << "\nEnter your Account Number : ";
+          cin >> account_number;
+
+          acc = b.BalanceEnquiry(account_number);
+          
+          cout << "\nYour Account Details : " << endl;
+          cout << acc;
+          break;
+
+        case 5:
+          cout << "\nEnter your Account Number : ";
+          cin >> account_number;
+
+          b.CloseAccount(account_number);
+          
+          cout << "\nYour Account is being Successfully Closed!!!" << endl;
+          cout << acc;
+          break;
+
+        case 6:
+          b.ShowAllAccount();
+          break;
+
+        case 7:
+          break;
+
+        default:
+          cout << "\nWrong Choice!!!\n";
+          break;
+      }
+
+    }while (choice!=7); 
+  return 0;
 }
